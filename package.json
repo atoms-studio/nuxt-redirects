@@ -1,6 +1,6 @@
 {
   "name": "@atoms-studio/nuxt-redirects",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Massive redirect rules module handler",
   "repository": "@atoms-studio/nuxt-redirects",
   "license": "MIT",
@@ -30,6 +30,7 @@
   "dependencies": {
     "@nuxt/kit": "^3.6.5",
     "consola": "^3.2.3",
+    "zod": "^3.21.4",
     "zod-csv": "^0.0.3"
   },
   "devDependencies": {
