@@ -39,8 +39,9 @@ export default defineNuxtRouteMiddleware((to, _) => {
       // punctual redirects had the priority, now we look for any regex redirections
       regexRedirects.forEach((r) => {
         const regex = new RegExp(r.from);
-        if (regex.test(path)) {
-          const toPath = path.replace(regex, r.to);
+        const pathWithoutTrailingSlash = path !== '/' && path.endsWith('/') ? path.slice(0, -1) : path
+        if (regex.test(pathWithoutTrailingSlash)) {
+          const toPath = pathWithoutTrailingSlash.replace(regex, r.to);
           return navigateTo(toPath, {
             redirectCode: r.code,
             external: true,
