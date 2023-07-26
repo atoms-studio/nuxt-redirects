@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Massive redirect rules module handler",
   "repository": "@atoms-studio/nuxt-redirects",
+  "private": false,
   "license": "MIT",
   "type": "module",
   "exports": {

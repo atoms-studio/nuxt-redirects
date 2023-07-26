@@ -65,9 +65,7 @@ export const redirects = ${JSON.stringify(parsedCsv.validRows)} as const
       filename: "nuxt-redirects/redirectsMiddleware.ts",
       write: true,
       options,
-      src: await resolver.resolvePath(
-        "./runtime/redirectsMiddleware.global.ts"
-      ),
+      src: await resolver.resolvePath("./runtime/redirectsMiddleware.global"),
     });
 
     addRouteMiddleware({
