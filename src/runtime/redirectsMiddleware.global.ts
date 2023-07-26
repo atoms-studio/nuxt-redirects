@@ -1,0 +1,66 @@
+import { redirects } from "./redirects";
+import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
+
+export default defineNuxtRouteMiddleware((to, _) => {
+  const getTypedRedirects = (redirects: any) =>
+    redirects as Array<{ code: number; from: string; to: string }>;
+  const isRegex = (s: string) => s.startsWith("^") && s.endsWith("$");
+
+
+  // divide redirection rules in punctual redirects and regex redirection rules
+  const typedRedirects = getTypedRedirects(redirects);
+
+
+  const punctualRedirects = typedRedirects.filter(
+    (redirectionRule) => !isRegex(redirectionRule.from)
+  );
+  const regexRedirects = typedRedirects.filter((redirectionRule) =>
+    isRegex(redirectionRule.from)
+  );
+  // redirection only happens server side
+  if (process.server || <% print(options.alwaysRedirect) %>) {
+    // removing =
+    const path = to.fullPath.endsWith("=")
+      ? to.fullPath.slice(0, -1)
+      : to.fullPath;
+
+    if (to.fullPath !== "/") {
+      // handling punctual redirects
+      const punctualRedirection = punctualRedirects.find(
+        (r) => r.from === path
+      );
+
+      if (typeof punctualRedirection !== "undefined") {
+        return navigateTo(punctualRedirection.to, {
+          redirectCode: punctualRedirection.code,
+          external: true,
+        });
+      }
+      // punctual redirects had the priority, now we look for any regex redirections
+      regexRedirects.forEach((r) => {
+        const regex = new RegExp(r.from);
+        if (regex.test(path)) {
+          const toPath = path.replace(regex, r.to);
+          return navigateTo(toPath, {
+            redirectCode: r.code,
+            external: true,
+          });
+        }
+      });
+    }
+
+    // trailing-slash
+    if (<% print(options.trailingSlash) %>) {
+      const splittedPath = to.fullPath.split("?")
+      const fullPathNoQuery = splittedPath[0];
+      if (fullPathNoQuery !== '/' && !fullPathNoQuery.endsWith("/")) {
+        splittedPath[0] = splittedPath[0] + '/'
+        return navigateTo(splittedPath.join("?"), {
+          redirectCode: 301,
+          external: true
+        })
+
+      }
+    }
+  }
+});

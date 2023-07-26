@@ -1,0 +1,3 @@
+code,from,to
+301,/some,/some-other
+301,^.*\/(\d+)-(.*)(\.html)$,/p-$2
