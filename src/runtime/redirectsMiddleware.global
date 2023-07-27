@@ -2,6 +2,7 @@ import { redirects } from "./redirects";
 import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
 
 export default defineNuxtRouteMiddleware((to, _) => {
+  if (to.fullPath.includes("robots.txt")) return
   const getTypedRedirects = (redirects: any) =>
     redirects as Array<{ code: number; from: string; to: string }>;
   const isRegex = (s: string) => s.startsWith("^") && s.endsWith("$");
@@ -14,53 +15,73 @@ export default defineNuxtRouteMiddleware((to, _) => {
   const punctualRedirects = typedRedirects.filter(
     (redirectionRule) => !isRegex(redirectionRule.from)
   );
+
   const regexRedirects = typedRedirects.filter((redirectionRule) =>
     isRegex(redirectionRule.from)
   );
+
+  const hasTrailingSlash = (path: string) => path.endsWith("/")
+  const removeTrailingSlash = (path: string) => hasTrailingSlash(path) ? path.slice(0, -1) : path
+  const addTrailingSlash = (path: string) => {
+    if (<% print(options.trailingSlash) %>) {
+      if (!hasTrailingSlash(path)) {
+        return path + "/"
+      }
+    }
+
+    return path
+  }
+
   // redirection only happens server side
   if (process.server || <% print(options.alwaysRedirect) %>) {
-    // removing =
-    const path = to.fullPath.endsWith("=")
+    // removing = and trailingSlash, ignore query
+    let path = removeTrailingSlash(to.fullPath.endsWith("=")
       ? to.fullPath.slice(0, -1)
-      : to.fullPath;
+      : to.fullPath).split("?")[0];
 
     if (to.fullPath !== "/") {
       // handling punctual redirects
       const punctualRedirection = punctualRedirects.find(
-        (r) => r.from === path
+        (r) => removeTrailingSlash(r.from) === path
       );
 
       if (typeof punctualRedirection !== "undefined") {
-        return navigateTo(punctualRedirection.to, {
+        return navigateTo(addTrailingSlash(punctualRedirection.to), {
           redirectCode: punctualRedirection.code,
           external: true,
         });
       }
       // punctual redirects had the priority, now we look for any regex redirections
+      let regexRedirection: { code: number, path: string } | undefined
       regexRedirects.forEach((r) => {
         const regex = new RegExp(r.from);
-        const pathWithoutTrailingSlash = path !== '/' && path.endsWith('/') ? path.slice(0, -1) : path
-        if (regex.test(pathWithoutTrailingSlash)) {
-          const toPath = pathWithoutTrailingSlash.replace(regex, r.to);
-          return navigateTo(toPath, {
-            redirectCode: r.code,
-            external: true,
-          });
+        if (regex.test(path)) {
+          const toPath = addTrailingSlash(path.replace(regex, r.to));
+          regexRedirection = { code: r.code, path: toPath }
         }
       });
-    }
 
-    // trailing-slash
-    if (<% print(options.trailingSlash) %>) {
-      const splittedPath = to.fullPath.split("?")
-      const fullPathNoQuery = splittedPath[0];
-      if (fullPathNoQuery !== '/' && !fullPathNoQuery.endsWith("/")) {
-        splittedPath[0] = splittedPath[0] + '/'
-        return navigateTo(splittedPath.join("?"), {
-          redirectCode: 301,
-          external: true
-        })
+      if (typeof regexRedirection !== 'undefined') {
 
+        return navigateTo(regexRedirection.path, {
+          redirectCode: regexRedirection.code,
+          external: true,
+        });
+      }
+
+
+      // trailing-slash
+      if (<% print(options.trailingSlash) %>) {
+        const originalSplittedPath = to.fullPath.split("?")
+        const originalPath = originalSplittedPath[0]
+
+        if (!hasTrailingSlash(originalPath)) {
+          originalSplittedPath[0] = addTrailingSlash(originalPath)
+          return navigateTo(originalSplittedPath.join("?"), {
+            redirectCode: 301,
+            external: true
+          })
+        }
       }
     }
   }
