@@ -1,6 +1,6 @@
 {
   "name": "@atoms-studio/nuxt-redirects",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Massive redirect rules module handler",
   "repository": "@atoms-studio/nuxt-redirects",
   "private": false,

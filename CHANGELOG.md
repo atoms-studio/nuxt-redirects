@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v1.0.3
+
+[compare changes](https://undefined/undefined/compare/v1.0.2...v1.0.3)
+
+### 🩹 Fixes
+
+- **example:** Fixed example regex, it should have a forward slash at the beginning (f77fe3c)
+- Redirect mixin (0cb8a2f)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.0.2
 
 [compare changes](https://undefined/undefined/compare/v1.0.1...v1.0.2)
