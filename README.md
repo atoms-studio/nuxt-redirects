@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A Nuxt module that allows for redirect management using a simple CSV file, using [zod-csv](https://github.com/bartoszgolebiowski/zod-csv)
+A Nuxt module that allows for redirect management using a simple CSV file, it leverages  [zod-csv](https://github.com/bartoszgolebiowski/zod-csv)
 under the hood for validation, handing both punctual and regex redirects. An example CSV file can be found [here](/playground/redirects.csv).
 
 ## Quick Setup
