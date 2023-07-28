@@ -24,7 +24,7 @@ export default defineNuxtModule<ModuleOptions>({
   // Default configuration options of the Nuxt module
   defaults: {
     csv: "redirects.csv",
-    trailingSlash: true,
+    trailingSlash: false,
     alwaysRedirect: false,
   },
   async setup(options, nuxt) {
@@ -40,7 +40,6 @@ export default defineNuxtModule<ModuleOptions>({
       from: zcsv.string(),
       to: zcsv.string(),
     });
-
     // reading csv
     const csv = await readFile(redirectsPath, { encoding: "utf8" }).catch(
       () => {
@@ -74,6 +73,7 @@ export const redirects = ${JSON.stringify(parsedCsv.validRows)} as const
       global: true,
     });
 
-    consola.info("Added redirection rules");
+    // @ts-ignore
+    consola.info(`Added ${parsedCsv.validRows.length} redirection rules`);
   },
 });
