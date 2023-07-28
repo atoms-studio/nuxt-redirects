@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.1.0
+
+[compare changes](https://undefined/undefined/compare/v1.0.3...v1.1.0)
+
+### 🚀 Enhancements
+
+- **test:** Added basic testing with a punctual and a regex redirection (e9f6a95)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.0.3
 
 [compare changes](https://undefined/undefined/compare/v1.0.2...v1.0.3)
