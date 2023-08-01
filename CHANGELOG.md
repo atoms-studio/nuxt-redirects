@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.1.1
+
+[compare changes](https://undefined/undefined/compare/v1.1.0...v1.1.1)
+
+### 🏡 Chore
+
+- Added license (8c25042)
+- Updated readme (6ecd4af)
+- Update README.md (cedabcd)
+- Fix typo in README.md (462f7e6)
+
+### ❤️  Contributors
+
+- Matteo Rigoni ([@Rigo-m](http://github.com/Rigo-m))
+- Gigantino <giovanni.gigantino@atoms.retexspa.com>
+
 ## v1.1.0
 
 [compare changes](https://undefined/undefined/compare/v1.0.3...v1.1.0)
