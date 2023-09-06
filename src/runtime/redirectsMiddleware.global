@@ -1,12 +1,19 @@
-import { redirects } from "./redirects";
 import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
 
-export default defineNuxtRouteMiddleware((to, _) => {
+export default defineNuxtRouteMiddleware(async (to, _) => {
   if (to.fullPath.includes("robots.txt")) return
   const getTypedRedirects = (redirects: any) =>
     redirects as Array<{ code: number; from: string; to: string }>;
   const isRegex = (s: string) => s.startsWith("^") && s.endsWith("$");
 
+  // if redirection is only server side, skip redirection entirely, else load redirection rules
+  let redirects: typeof import("./redirects")["redirects"] | null  = null
+  if (!<% print(options.alwaysRedirect) %> && !process.server) {
+    return
+  } else {
+    const { redirects: r } = await import("./redirects")
+    redirects = r
+  }
 
   // divide redirection rules in punctual redirects and regex redirection rules
   const typedRedirects = getTypedRedirects(redirects);
