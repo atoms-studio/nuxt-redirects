@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.1.2
+
+[compare changes](https://undefined/undefined/compare/v1.1.1...v1.1.2)
+
+### 🩹 Fixes
+
+- Do not include redirects in client bundle if its server only redirection (fe18f60)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.1.1
 
 [compare changes](https://undefined/undefined/compare/v1.1.0...v1.1.1)
