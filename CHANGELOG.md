@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.1.3
+
+[compare changes](https://undefined/undefined/compare/v1.1.2...v1.1.3)
+
+### 🩹 Fixes
+
+- **redirection:** Fixed excluding query from url (36e12bf)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.1.2
 
 [compare changes](https://undefined/undefined/compare/v1.1.1...v1.1.2)
