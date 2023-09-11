@@ -18,4 +18,9 @@ describe("ssr", async () => {
     const html = await $fetch("/t-page");
     expect(html).toContain("p-page");
   });
+
+  it("redirects to /p-page-with-query when visiting /t-page-with-query?q=some", async () => {
+    const html = await $fetch("/t-page-with-query?q=some")
+    expect(html).toContain("p-page-with-query")
+  })
 });

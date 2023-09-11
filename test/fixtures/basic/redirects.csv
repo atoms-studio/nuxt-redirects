@@ -1,3 +1,4 @@
 code,from,to
 301,/some,/some-other
+301,/t-page-with-query?q="some",/p-page-with-query
 301,^.*t-(.*)$,/p-$1

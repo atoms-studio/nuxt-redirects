@@ -44,7 +44,7 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
     // removing = and trailingSlash, ignore query
     let path = removeTrailingSlash(to.fullPath.endsWith("=")
       ? to.fullPath.slice(0, -1)
-      : to.fullPath).split("?")[0];
+      : to.fullPath);
 
     if (to.fullPath !== "/") {
       // handling punctual redirects
