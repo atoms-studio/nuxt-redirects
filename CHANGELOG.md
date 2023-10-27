@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://undefined/undefined/compare/v1.1.3...v1.2.0)
+
+### 🚀 Enhancements
+
+- Bring query alongside redirection (91f2b65)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.1.3
 
 [compare changes](https://undefined/undefined/compare/v1.1.2...v1.1.3)
