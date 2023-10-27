@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
   const isRegex = (s: string) => s.startsWith("^") && s.endsWith("$");
 
   // if redirection is only server side, skip redirection entirely, else load redirection rules
-  let redirects: typeof import("./redirects")["redirects"] | null  = null
+  let redirects: typeof import("./redirects")["redirects"] | null = null
   if (!<% print(options.alwaysRedirect) %> && !process.server) {
     return
   } else {
@@ -38,6 +38,22 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
 
     return path
   }
+  const getQueriesFromPath = (path: string) => {
+    return path.split("?")?.[1]?.split("&") ?? []
+  }
+
+  const joinQueriesAndPath = (path: string, queries: string[]) => {
+    if (!queries.length) return path
+    return path + "?" + queries.join('&')
+  }
+
+  const getUrl = (path: string) => {
+    return path.split("?")[0]
+  }
+
+  const getQuery = (path: string) => {
+    return path.split("?")?.[1] ?? ''
+  }
 
   // redirection only happens server side
   if (process.server || <% print(options.alwaysRedirect) %>) {
@@ -46,14 +62,37 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
       ? to.fullPath.slice(0, -1)
       : to.fullPath);
 
+    const query = getQuery(path)
+    const urlPath = getUrl(path)
+
     if (to.fullPath !== "/") {
       // handling punctual redirects
       const punctualRedirection = punctualRedirects.find(
-        (r) => removeTrailingSlash(r.from) === path
+        (r) => {
+        const from = r.from
+        const fromPath = getUrl(from)
+        const fromQuery = getQuery(from)
+          if (fromQuery !== '') {
+            // check validity of pathQuery
+            const qArr = query.split("&")
+            const fromQArr = fromQuery.split("&")
+
+            const queryValidated = fromQArr.every(q => qArr.includes(q))
+
+            return queryValidated && removeTrailingSlash(fromPath) === urlPath
+          }
+          return removeTrailingSlash(fromPath) === urlPath
+        }
       );
 
       if (typeof punctualRedirection !== "undefined") {
-        return navigateTo(addTrailingSlash(punctualRedirection.to), {
+        // join request and redirection queries
+        const queryParams = [
+          ...getQueriesFromPath(to.fullPath),
+          ...getQueriesFromPath(punctualRedirection.to)
+        ]
+        const uri = joinQueriesAndPath(addTrailingSlash(punctualRedirection.to), queryParams)
+        return navigateTo(uri, {
           redirectCode: punctualRedirection.code,
           external: true,
         });
@@ -69,8 +108,14 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
       });
 
       if (typeof regexRedirection !== 'undefined') {
+        // join request and redirection queries
+        const queryParams = [
+          ...getQueriesFromPath(to.fullPath),
+          ...getQueriesFromPath(regexRedirection.path)
+        ]
+        const uri = joinQueriesAndPath(addTrailingSlash(regexRedirection.path), queryParams)
 
-        return navigateTo(regexRedirection.path, {
+        return navigateTo(uri, {
           redirectCode: regexRedirection.code,
           external: true,
         });
@@ -93,3 +138,4 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
     }
   }
 });
+

@@ -44,7 +44,7 @@ export default defineNuxtModule<ModuleOptions>({
     const csv = await readFile(redirectsPath, { encoding: "utf8" }).catch(
       () => {
         throw new Error("Error reading redirects csv file");
-      }
+      },
     );
     const parsedCsv = parseCSVContent(csv, redirectsSchema);
 

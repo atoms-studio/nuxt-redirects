@@ -1,7 +1,3 @@
 code,from,to
-301,^(\d+)-(.*)\.html$,/p-$2
-301,^.*\/(\d+)-(.*)(\.html)$,/p-$2
-301,^/brand/([0-9]+)-(.*)$,/b-$2
-301,/t-page-with-query?q="some",/p-page-with-query
-301,^/t-(.*)$,/p-$1
+301,/pages?q=some,/page-stoca
 
