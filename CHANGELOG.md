@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.2.1
+
+[compare changes](https://undefined/undefined/compare/v1.2.0...v1.2.1)
+
+### 🩹 Fixes
+
+- Regex redirects corrected (d11df2e)
+
+### ❤️  Contributors
+
+- Matteo Rigoni <matteo.rigoni@atoms.studio>
+
 ## v1.2.0
 
 [compare changes](https://undefined/undefined/compare/v1.1.3...v1.2.0)
