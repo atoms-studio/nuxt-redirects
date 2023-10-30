@@ -102,7 +102,7 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
       regexRedirects.forEach((r) => {
         const regex = new RegExp(r.from);
         if (regex.test(path)) {
-          const toPath = addTrailingSlash(path.replace(regex, r.to));
+          const toPath = addTrailingSlash(urlPath.replace(regex, r.to));
           regexRedirection = { code: r.code, path: toPath }
         }
       });
